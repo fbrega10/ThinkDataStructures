@@ -37,15 +37,21 @@ public class MyArrayList<T> implements List<T> {
 		mal.add(2);
 		mal.add(3);
 		System.out.println(Arrays.toString(mal.toArray()) + " size = " + mal.size);
-
-		mal.remove(new Integer(2));
+		mal.remove(2);
 		System.out.println(Arrays.toString(mal.toArray()) + " size = " + mal.size);
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public boolean add(T element) {
-		// TODO: FILL THIS IN!
-		return false;
+		if (size >= array.length){
+			T[] bigger = (T[]) new Object[array.length * 2];
+			System.arraycopy(array, 0, bigger, 0, array.length);
+			array = bigger;
+		}
+		array[size] = element;
+		size++;
+		return true;
 	}
 
 	@Override
@@ -82,6 +88,9 @@ public class MyArrayList<T> implements List<T> {
 	public void clear() {
 		// note: this version does not actually null out the references
 		// in the array, so it might delay garbage collection.
+		for (int i = 0; i < size -1; i++){
+			array[i] = null;
+		}
 		size = 0;
 	}
 
@@ -109,8 +118,13 @@ public class MyArrayList<T> implements List<T> {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public int indexOf(Object target) {
-		// TODO: FILL THIS IN!
+		for (int i = 0; i < size; i++){
+			if (equals(target , array[i])){
+				return i;	
+			}
+		}
 		return -1;
 	}
 
@@ -182,7 +196,15 @@ public class MyArrayList<T> implements List<T> {
 	@Override
 	public T remove(int index) {
 		// TODO: FILL THIS IN!
-		return null;
+		if (index < 0 || index >= size){
+			throw new IndexOutOfBoundsException("cannot remove element from wrong index: "+ index);
+		}
+		T objectRemoved = array[index];
+		for (int i = index; i < size-1; i++){
+			array[i] = array[i+1];
+		}
+		size--;
+		return objectRemoved;
 	}
 
 	@Override
@@ -202,7 +224,9 @@ public class MyArrayList<T> implements List<T> {
 	@Override
 	public T set(int index, T element) {
 		// TODO: FILL THIS IN!
-		return null;
+		T old = get(index);
+		array[index] = element;
+		return old;
 	}
 
 	@Override

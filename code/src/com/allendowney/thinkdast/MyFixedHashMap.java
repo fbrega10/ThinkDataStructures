@@ -58,7 +58,7 @@ public class MyFixedHashMap<K, V> extends MyHashMap<K, V> implements Map<K, V> {
 	public static void main(String[] args) {
 		Map<String, Integer> map = new MyFixedHashMap<String, Integer>();
 		for (int i=0; i<10; i++) {
-			map.put(new Integer(i).toString(), i);
+			map.put(""+i, i);
 		}
 		Integer value = map.get("3");
 		System.out.println(value);
